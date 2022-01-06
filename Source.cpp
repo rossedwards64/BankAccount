@@ -1,9 +1,6 @@
 #include <crtdbg.h>
 #include <iostream>
-#include <string>
-#include "CurrentAccount.h"
-#include "LoanAccount.h"
-#include "SavingsAccount.h"
+#include "AccountFactory.h"
 
 using namespace std;
 
@@ -23,17 +20,6 @@ using namespace std;
 #define FIRST_MENU_ITEM     MENU_EXIT
 #define LAST_MENU_ITEM      MENU_SELECT_ACCOUNT
 
-std::shared_ptr<BankAccount> BankAccount::accountFactory(const int choice)
-{
-    if (choice == 0)
-        return std::make_shared<CurrentAccount>(101, "Current Account", 400);
-    else if (choice == 1)
-        return std::make_shared<SavingsAccount>(201, "Savings Account", 400);
-    else 
-        return std::make_shared<LoanAccount>(301, "Loan Account", 5000);
-}
-
-
 void displayMenu();
 int getMenuChoice();
 int selectAccount();
@@ -49,7 +35,7 @@ int main()
     int choice = 0;
 
     // the current account is selected by default
-    std::shared_ptr<BankAccount> selaccount = BankAccount::accountFactory(0);
+    std::shared_ptr<BankAccount> selaccount = AccountFactory::getAccount(0);
 
     do
     {
@@ -61,7 +47,7 @@ int main()
         case MENU_VIEW_SUMMARY: selaccount->printSummary(); break;
         case MENU_DEPOSIT: deposit(*selaccount); break;
         case MENU_WITHDRAW: withdraw(*selaccount); break;
-        case MENU_SELECT_ACCOUNT: selaccount = BankAccount::accountFactory(selectAccount()); break;
+        case MENU_SELECT_ACCOUNT: selaccount = AccountFactory::getAccount(selectAccount()); break;
         }
 
     } while (choice != MENU_EXIT);

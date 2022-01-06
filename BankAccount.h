@@ -8,7 +8,6 @@ public:
 	BankAccount(unsigned long accountNumber, std::string accountName, int balance);
 	BankAccount();
 	virtual ~BankAccount();
-	static std::shared_ptr<BankAccount> accountFactory(int choice);
 	void printSummary() const;
 	int getBalance() const;
 	virtual bool deposit(int amount) = 0;

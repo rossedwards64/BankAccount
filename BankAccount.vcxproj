@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="AccountFactory.h" />
     <ClInclude Include="BankAccount.h" />
     <ClInclude Include="CurrentAccount.h" />
     <ClInclude Include="InterestAccount.h" />
