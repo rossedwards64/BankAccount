@@ -1,3 +1,4 @@
+#include <crtdbg.h>
 #include <iostream>
 #include <string>
 #include "CurrentAccount.h"
@@ -5,6 +6,7 @@
 #include "SavingsAccount.h"
 
 using namespace std;
+
 
 // old-school way of declaring constants – you should be using const int MENU_EXIT=0; but these are here to show you #defines as you will likely come across them in many places
 #define MENU_EXIT           0
@@ -17,10 +19,20 @@ using namespace std;
 #define CURRENT_ACCOUNT     0
 #define SAVINGS_ACCOUNT     1
 #define LOAN_ACCOUNT        2
-#define NOOFACCOUNTS        3
 
 #define FIRST_MENU_ITEM     MENU_EXIT
 #define LAST_MENU_ITEM      MENU_SELECT_ACCOUNT
+
+std::shared_ptr<BankAccount> BankAccount::accountFactory(const int choice)
+{
+    if (choice == 0)
+        return std::make_shared<CurrentAccount>(101, "Current Account", 400);
+    else if (choice == 1)
+        return std::make_shared<SavingsAccount>(201, "Savings Account", 400);
+    else 
+        return std::make_shared<LoanAccount>(301, "Loan Account", 5000);
+}
+
 
 void displayMenu();
 int getMenuChoice();
@@ -30,18 +42,14 @@ void withdraw(BankAccount& account);
 
 int main()
 {
-    // Create an array of pointers to store each account using polymorphism
-    BankAccount* accounts[NOOFACCOUNTS] =
-    {
-      new CurrentAccount(101, "Current Account", 200),
-      new SavingsAccount(201, "Savings", 400),
-      new LoanAccount(301, "Loan", 5000)
-    };
+	#ifdef _DEBUG
+	_onexit(_CrtDumpMemoryLeaks);
+	#endif
 
-    int choice;
+    int choice = 0;
 
     // the current account is selected by default
-    BankAccount* selaccount = accounts[CURRENT_ACCOUNT];
+    std::shared_ptr<BankAccount> selaccount = BankAccount::accountFactory(0);
 
     do
     {
@@ -53,13 +61,10 @@ int main()
         case MENU_VIEW_SUMMARY: selaccount->printSummary(); break;
         case MENU_DEPOSIT: deposit(*selaccount); break;
         case MENU_WITHDRAW: withdraw(*selaccount); break;
-        case MENU_SELECT_ACCOUNT: selaccount = accounts[selectAccount()]; break;
+        case MENU_SELECT_ACCOUNT: selaccount = BankAccount::accountFactory(selectAccount()); break;
         }
 
     } while (choice != MENU_EXIT);
-
-    for (int i = 0; i < NOOFACCOUNTS; i++)
-        delete accounts[i];
 
     // no need to delete the accounts array of pointers because that is on the stack
 
@@ -117,7 +122,7 @@ void deposit(BankAccount& account)
     cout << "Enter amount to deposit \x9C";
     cin >> amount;
 
-    if (!account.deposit((int)(amount * 100)))
+    if (!account.deposit(static_cast<int>(amount * 100)))
         cout << "\n** Cannot deposit further funds into account **\n";
 }
 
@@ -129,6 +134,6 @@ void withdraw(BankAccount& account)
     cout << "Enter amount to withdraw \x9C";
     cin >> amount;
 
-    if (!account.withdraw((int)(amount * 100)))
+    if (!account.withdraw(static_cast<int>(amount * 100)))
         cout << "\n** Not enough funds to withdraw requested amount **\n";
 }

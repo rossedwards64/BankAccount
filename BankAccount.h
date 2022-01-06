@@ -1,14 +1,16 @@
 #pragma once
+#include <iostream>
 #include <string>
 
 class BankAccount
 {
 public:
-	BankAccount(unsigned long accountNumber, std::string accoutName, int balance);
+	BankAccount(unsigned long accountNumber, std::string accountName, int balance);
 	BankAccount();
-	~BankAccount();
-	void printSummary();
-	int getBalance();
+	virtual ~BankAccount();
+	static std::shared_ptr<BankAccount> accountFactory(int choice);
+	void printSummary() const;
+	int getBalance() const;
 	virtual bool deposit(int amount) = 0;
 	virtual bool withdraw(int amount) = 0;
 

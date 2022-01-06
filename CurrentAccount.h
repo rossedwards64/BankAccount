@@ -1,6 +1,6 @@
 #pragma once
-#include "BankAccount.h"
 #include <string>
+#include "BankAccount.h"
 
 class CurrentAccount :
     public BankAccount

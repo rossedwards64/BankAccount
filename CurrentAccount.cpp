@@ -1,24 +1,23 @@
 #include "CurrentAccount.h"
 #include <string>
+#include <utility>
 
-CurrentAccount::CurrentAccount(unsigned long accoutNumber, std::string accountName, int balance) {
-	setAccountNumber(accoutNumber);
-	setAccountName(accountName);
+CurrentAccount::CurrentAccount(const unsigned long accountNumber, std::string accountName, const int balance) {
+	setAccountNumber(accountNumber);
+	setAccountName(std::move(accountName));
 	changeBalance(balance, '+');
 }
 
-CurrentAccount::~CurrentAccount() {
+CurrentAccount::~CurrentAccount() = default;
 
-}
-
-bool CurrentAccount::deposit(int amount) {
+bool CurrentAccount::deposit(const int amount) {
 	int balance = getBalance();
 	balance += amount;
 	changeBalance(amount, '+');
 	return true;
 }
 
-bool CurrentAccount::withdraw(int amount) {
+bool CurrentAccount::withdraw(const int amount) {
 	int balance = getBalance();
 	if (balance >= amount) {
 		balance -= amount;

@@ -1,16 +1,14 @@
 #include "SavingsAccount.h"
 
-SavingsAccount::SavingsAccount(unsigned long accoutNumber, std::string accountName, int balance) {
-	setAccountNumber(accoutNumber);
-	setAccountName(accountName);
+SavingsAccount::SavingsAccount(const unsigned long accountNumber, std::string accountName, const int balance) {
+	setAccountNumber(accountNumber);
+	setAccountName(std::move(accountName));
 	changeBalance(balance, '+');
 }
 
-SavingsAccount::~SavingsAccount() {
+SavingsAccount::~SavingsAccount() = default;
 
-}
- 
-bool SavingsAccount::deposit(int amount) {
+bool SavingsAccount::deposit(const int amount) {
 	int balance = getBalance();
 	if (amount <= subBalance) {
 		balance += amount;
@@ -22,7 +20,7 @@ bool SavingsAccount::deposit(int amount) {
 	}
 }
 
-bool SavingsAccount::withdraw(int amount) {
+bool SavingsAccount::withdraw(const int amount) {
 	int balance = getBalance();
 	if (balance >= amount) {
 		balance -= amount;

@@ -1,8 +1,10 @@
 #include "InterestAccount.h"
 
-InterestAccount::InterestAccount(unsigned long accountNumber, std::string accountName, int balance) {
+#include <utility>
+
+InterestAccount::InterestAccount(const unsigned long accountNumber, std::string accountName, const int balance) {
 	setAccountNumber(accountNumber);
-	setAccountName(accountName);
+	setAccountName(std::move(accountName));
 	changeBalance(balance, '+');
 }
 
@@ -10,11 +12,9 @@ InterestAccount::InterestAccount() {
 	changeBalance(0, '+');
 }
 
-InterestAccount::~InterestAccount() {
+InterestAccount::~InterestAccount() = default;
 
-}
-
-void InterestAccount::setInterestRate(float newInterestRate) {
+void InterestAccount::setInterestRate(const float newInterestRate) {
 	interestRate = newInterestRate;
 }
 

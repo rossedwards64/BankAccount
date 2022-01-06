@@ -1,17 +1,16 @@
 #include "LoanAccount.h"
 #include <iostream>
+#include <utility>
 
-LoanAccount::LoanAccount(unsigned long accoutNumber, std::string accountName, int balance) {
-	setAccountNumber(accoutNumber);
-	setAccountName(accountName);
+LoanAccount::LoanAccount(const unsigned long accountNumber, std::string accountName, const int balance) {
+	setAccountNumber(accountNumber);
+	setAccountName(std::move(accountName));
 	changeBalance(balance, '+');
 }
 
-LoanAccount::~LoanAccount() {
-	
-}
+LoanAccount::~LoanAccount() = default;
 
-bool LoanAccount::deposit(int amount) {
+bool LoanAccount::deposit(const int amount) {
 	int balance = getBalance();
 	balance += amount;
 	changeBalance(amount, '+');

@@ -1,21 +1,14 @@
 #include "BankAccount.h"
-#include <iostream>
 
-BankAccount::BankAccount(unsigned long accoutNumber, std::string accountName, int balance) {
-	this->accountNumber = accountNumber;
-	this->accountName = accountName;
-	this->balance = balance;
-}
+BankAccount::BankAccount(const unsigned long accountNumber, std::string accountName, const int balance)
+	: accountNumber(accountNumber), accountName(std::move(accountName)), balance(balance) { }
 
-BankAccount::BankAccount() {
-	balance = 0;
-}
+BankAccount::BankAccount() : balance(0) { }
 
-BankAccount::~BankAccount() {
+BankAccount::~BankAccount() = default;
 
-}
-
-void BankAccount::printSummary() {
+void BankAccount::printSummary() const
+{
 	const int pounds = balance / 100;
 	const int pence = balance - (pounds * 100);
 
@@ -36,19 +29,14 @@ void BankAccount::printSummary() {
 	std::cout << pence << std::endl << std::endl;
 }
 
-int BankAccount::getBalance() {
-	return balance;
-}
+int BankAccount::getBalance() const { return balance; }
 
-void BankAccount::setAccountNumber(unsigned long newAccountNumber) {
-	accountNumber = newAccountNumber;
-}
+void BankAccount::setAccountNumber(const unsigned long newAccountNumber) { accountNumber = newAccountNumber; }
 
-void BankAccount::setAccountName(std::string newAccountName) {
-	accountName = newAccountName;
-}
+void BankAccount::setAccountName(std::string newAccountName) { accountName = std::move(newAccountName); }
 
-void BankAccount::changeBalance(int amount, char operand) {
+void BankAccount::changeBalance(const int amount, const char operand)
+{
 	if (operand == '+') {
 		balance += amount;
 	}
