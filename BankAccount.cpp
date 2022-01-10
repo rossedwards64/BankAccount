@@ -37,11 +37,7 @@ void BankAccount::setAccountName(std::string newAccountName) { accountName = std
 
 void BankAccount::changeBalance(const int amount, const char operand)
 {
-	if (operand == '+') {
-		balance += amount;
-	}
-	else if (operand == '-') {
-		balance -= amount;
-	}
+	if (operand == '+') { balance += amount; }
+	else if (operand == '-') { balance -= amount; }
 }
 
